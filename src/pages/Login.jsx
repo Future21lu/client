@@ -21,10 +21,14 @@ export function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (username === "doctor" && password === "admin123") {
+    if (username === "admin" && password === "admin123") {
+      navigate("/admin-dashboard");
+    } else if (username === "doctor" && password === "doctor123") {
       navigate("/dashboard");
+    } else if (username === "opd" && password === "opd123") {
+      navigate("/opd-counter");
     } else {
-      alert("Invalid credentials");
+      alert("Invalid credentials. Try: admin/admin123, doctor/doctor123, or opd/opd123");
     }
   };
 
