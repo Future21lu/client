@@ -38,6 +38,7 @@ import { QRCodeSVG } from "qrcode.react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { useNavigate } from "react-router-dom";
+import { departments, labTests, otherTests } from "../data/mockData";
 
 // === Layout constants ===
 const SPACER_COL = 64;           // px — pushes both cards slightly to the RIGHT
@@ -45,29 +46,6 @@ const LEFT_CARD_WIDTH = 620;     // px — Patient Registration
 const RIGHT_CARD_WIDTH = 560;    // px — Items (reduced width)
 const LEFT_CARD_HEIGHT = 560;    // px
 const RIGHT_CARD_HEIGHT = 520;   // px — slightly shorter
-
-const departments = [
-  "General medicine",
-  "Dermatology",
-  "General Surgery",
-  "Obstetrics and Gynaecology",
-  "Orthopedics",
-  "ENT",
-  "Anesthesiology",
-  "Paediatrics",
-  "Pathology",
-  "Biochemistry",
-  "Dentistry",
-  "Microbiology",
-  "OBG",
-  "Pharmacology",
-  "Physiology",
-  "Psychiatry",
-  "Radiology",
-];
-
-const labTests = ["Blood Sugar", "CBC", "Liver Function Test", "Urine Routine", "ECG", "X-Ray"];
-const otherTests = ["ECG Follow-up", "Specialist Advice", "Nutrition"];
 
 export const OPDCounterDashboard = () => {
   const navigate = useNavigate();

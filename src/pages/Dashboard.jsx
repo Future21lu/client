@@ -45,6 +45,12 @@ import {
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { 
+  mockPatients, 
+  mockVisitHistory, 
+  mockPrescriptions,
+  getPrescriptionsByDoctorId 
+} from '../data/mockData';
 
 export function Dashboard() {
   const navigate = useNavigate();
@@ -58,79 +64,10 @@ export function Dashboard() {
   });
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  // Sample data - assigned patients
-  const [assignedPatients] = useState([
-    {
-      id: 1,
-      name: 'John Doe',
-      age: 35,
-      gender: 'Male',
-      phone: '9876543210',
-      lastVisit: '2024-01-10',
-      condition: 'Hypertension',
-      status: 'Active',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      age: 28,
-      gender: 'Female',
-      phone: '9876543211',
-      lastVisit: '2024-01-12',
-      condition: 'Diabetes',
-      status: 'Follow-up',
-    },
-    {
-      id: 3,
-      name: 'Bob Johnson',
-      age: 45,
-      gender: 'Male',
-      phone: '9876543212',
-      lastVisit: '2024-01-08',
-      condition: 'Migraine',
-      status: 'Recovered',
-    },
-  ]);
-
-  // Sample visit history
-  const [visitHistory] = useState({
-    1: [
-      {
-        date: '2024-01-10',
-        diagnosis: 'Hypertension',
-        medicines: 'Amlodipine 5mg, Metoprolol 25mg',
-        notes: 'Blood pressure under control. Continue medication.',
-        doctor: 'Dr. Sarah Wilson',
-      },
-      {
-        date: '2023-12-15',
-        diagnosis: 'Hypertension - Initial',
-        medicines: 'Amlodipine 5mg',
-        notes: 'Newly diagnosed hypertension. Lifestyle changes recommended.',
-        doctor: 'Dr. Sarah Wilson',
-      },
-    ],
-    2: [
-      {
-        date: '2024-01-12',
-        diagnosis: 'Type 2 Diabetes',
-        medicines: 'Metformin 500mg, Glimepiride 2mg',
-        notes: 'HbA1c levels improved. Continue current treatment.',
-        doctor: 'Dr. Michael Brown',
-      },
-    ],
-    3: [
-      {
-        date: '2024-01-08',
-        diagnosis: 'Migraine',
-        medicines: 'Sumatriptan 50mg, Propranolol 40mg',
-        notes: 'Migraine episodes reduced. Preventive medication working well.',
-        doctor: 'Dr. Emily Davis',
-      },
-    ],
-  });
-
-  const [prescriptions, setPrescriptions] = useState([]);
+  // Initialize with mock data
+  const [assignedPatients] = useState([...mockPatients]);
+  const [visitHistory] = useState({ ...mockVisitHistory });
+  const [prescriptions, setPrescriptions] = useState([...getPrescriptionsByDoctorId(1)]); // Assuming doctor ID 1
 
   const handleAddPrescription = (patient) => {
     setSelectedPatient(patient);
@@ -508,6 +445,11 @@ export function Dashboard() {
                           <Typography variant="body2" color="textSecondary">
                             <strong>Doctor:</strong> {visit.doctor}
                           </Typography>
+                          {visit.vitals && (
+                            <Typography variant="body2" color="textSecondary">
+                              <strong>Vitals:</strong> BP: {visit.vitals.bp}, Pulse: {visit.vitals.pulse}, Temp: {visit.vitals.temp}
+                            </Typography>
+                          )}
                           <Typography variant="body2" color="textSecondary">
                             <strong>Medicines:</strong> {visit.medicines}
                           </Typography>

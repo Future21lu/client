@@ -41,6 +41,12 @@ import {
   Logout as LogoutIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { 
+  mockPatients, 
+  mockDoctors, 
+  mockMedicines, 
+  mockPrescriptions 
+} from "../data/mockData";
 
 export function AdminDashboard() {
   const navigate = useNavigate();
@@ -51,29 +57,11 @@ export function AdminDashboard() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
-  // Sample data
-  const [patients, setPatients] = useState([
-    { id: 1, name: "John Doe", age: 35, gender: "Male", phone: "9876543210", address: "123 Main St", status: "Active" },
-    { id: 2, name: "Jane Smith", age: 28, gender: "Female", phone: "9876543211", address: "456 Oak Ave", status: "Active" },
-    { id: 3, name: "Bob Johnson", age: 45, gender: "Male", phone: "9876543212", address: "789 Pine Rd", status: "Inactive" },
-  ]);
-
-  const [doctors, setDoctors] = useState([
-    { id: 1, name: "Dr. Sarah Wilson", specialization: "Cardiology", phone: "9876543220", email: "sarah@hospital.com", status: "Active" },
-    { id: 2, name: "Dr. Michael Brown", specialization: "Neurology", phone: "9876543221", email: "michael@hospital.com", status: "Active" },
-    { id: 3, name: "Dr. Emily Davis", specialization: "Pediatrics", phone: "9876543222", email: "emily@hospital.com", status: "Active" },
-  ]);
-
-  const [medicines, setMedicines] = useState([
-    { id: 1, name: "Paracetamol", category: "Analgesic", stock: 500, price: 10, manufacturer: "PharmaCorp" },
-    { id: 2, name: "Amoxicillin", category: "Antibiotic", stock: 200, price: 25, manufacturer: "MediLab" },
-    { id: 3, name: "Ibuprofen", category: "Anti-inflammatory", stock: 300, price: 15, manufacturer: "HealthPlus" },
-  ]);
-
-  const [prescriptions] = useState([
-    { id: 1, patientName: "John Doe", doctorName: "Dr. Sarah Wilson", date: "2024-01-15", medicines: "Paracetamol, Amoxicillin", status: "Completed" },
-    { id: 2, patientName: "Jane Smith", doctorName: "Dr. Michael Brown", date: "2024-01-14", medicines: "Ibuprofen", status: "Pending" },
-  ]);
+  // Initialize state with mock data
+  const [patients, setPatients] = useState([...mockPatients]);
+  const [doctors, setDoctors] = useState([...mockDoctors]);
+  const [medicines, setMedicines] = useState([...mockMedicines]);
+  const [prescriptions] = useState([...mockPrescriptions]);
 
   const [formData, setFormData] = useState({});
 
@@ -166,6 +154,7 @@ export function AdminDashboard() {
             <TableCell>Gender</TableCell>
             <TableCell>Phone</TableCell>
             <TableCell>Address</TableCell>
+            <TableCell>Department</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
@@ -178,6 +167,7 @@ export function AdminDashboard() {
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.phone}</TableCell>
               <TableCell>{patient.address}</TableCell>
+              <TableCell>{patient.department}</TableCell>
               <TableCell>
                 <Chip
                   label={patient.status}
@@ -209,6 +199,7 @@ export function AdminDashboard() {
             <TableCell>Specialization</TableCell>
             <TableCell>Phone</TableCell>
             <TableCell>Email</TableCell>
+            <TableCell>Experience</TableCell>
             <TableCell>Status</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
@@ -220,6 +211,7 @@ export function AdminDashboard() {
               <TableCell>{doctor.specialization}</TableCell>
               <TableCell>{doctor.phone}</TableCell>
               <TableCell>{doctor.email}</TableCell>
+              <TableCell>{doctor.experience}</TableCell>
               <TableCell>
                 <Chip
                   label={doctor.status}
@@ -252,6 +244,7 @@ export function AdminDashboard() {
             <TableCell>Stock</TableCell>
             <TableCell>Price (₹)</TableCell>
             <TableCell>Manufacturer</TableCell>
+            <TableCell>Batch No</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -269,6 +262,7 @@ export function AdminDashboard() {
               </TableCell>
               <TableCell>₹{medicine.price}</TableCell>
               <TableCell>{medicine.manufacturer}</TableCell>
+              <TableCell>{medicine.batchNo}</TableCell>
               <TableCell>
                 <IconButton onClick={() => handleOpenDialog("medicine", medicine)}>
                   <EditIcon />
@@ -292,7 +286,7 @@ export function AdminDashboard() {
             <TableCell>Patient</TableCell>
             <TableCell>Doctor</TableCell>
             <TableCell>Date</TableCell>
-            <TableCell>Medicines</TableCell>
+            <TableCell>Diagnosis</TableCell>
             <TableCell>Status</TableCell>
           </TableRow>
         </TableHead>
@@ -302,7 +296,7 @@ export function AdminDashboard() {
               <TableCell>{prescription.patientName}</TableCell>
               <TableCell>{prescription.doctorName}</TableCell>
               <TableCell>{prescription.date}</TableCell>
-              <TableCell>{prescription.medicines}</TableCell>
+              <TableCell>{prescription.diagnosis}</TableCell>
               <TableCell>
                 <Chip
                   label={prescription.status}
@@ -379,6 +373,22 @@ export function AdminDashboard() {
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Department"
+                    value={formData.department || ""}
+                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Aadhar Number"
+                    value={formData.aadhar || ""}
+                    onChange={(e) => setFormData({ ...formData, aadhar: e.target.value })}
+                  />
+                </Grid>
               </>
             )}
 
@@ -415,6 +425,22 @@ export function AdminDashboard() {
                     type="email"
                     value={formData.email || ""}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Experience"
+                    value={formData.experience || ""}
+                    onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Qualification"
+                    value={formData.qualification || ""}
+                    onChange={(e) => setFormData({ ...formData, qualification: e.target.value })}
                   />
                 </Grid>
               </>
@@ -462,6 +488,24 @@ export function AdminDashboard() {
                     label="Manufacturer"
                     value={formData.manufacturer || ""}
                     onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Batch Number"
+                    value={formData.batchNo || ""}
+                    onChange={(e) => setFormData({ ...formData, batchNo: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label="Expiry Date"
+                    type="date"
+                    value={formData.expiryDate || ""}
+                    onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
+                    InputLabelProps={{ shrink: true }}
                   />
                 </Grid>
               </>
